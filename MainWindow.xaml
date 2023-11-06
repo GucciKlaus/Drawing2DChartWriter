@@ -1,0 +1,83 @@
+﻿<Window x:Class="Drawing2DChartWriter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Drawing2DChartWriter"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <DockPanel LastChildFill="True">
+        <Grid DockPanel.Dock="Left" Width="200">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button Margin="5" MaxWidth="120" VerticalAlignment="Center" Grid.Row="0" Name="StartButton" Content="Timer is stopped" Click="StartButton_Click"></Button>
+
+
+
+
+
+            <GroupBox Grid.Row="1" Header="Sampling Rate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="1" Grid.Column="0"  Content="50ms"></Label>
+                    <Label Name="SamplingLabel" Grid.Row="1" Grid.Column="1"  Content="100ms"></Label>
+                    <Label Grid.Row="1" Grid.Column="2"  Content="1000ms"></Label>
+                    <Slider Name="SamplingSlider" Grid.Row="0" Grid.ColumnSpan="3"
+        Maximum="1000" Minimum="50" TickFrequency="50" IsSnapToTickEnabled="True" ValueChanged="SamplingSlider_ValueChanged"></Slider>
+                </Grid>
+            </GroupBox>
+
+
+            <GroupBox Grid.Row="2" Header="Generate Value by">
+                <StackPanel>
+                    <RadioButton Content="Random value" IsChecked="true"></RadioButton>
+                    <RadioButton Content="Slider value" IsChecked="false"></RadioButton>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Grid.Row="3" Header="Set Value">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <ProgressBar Name="PrgValue" Orientation="Vertical" Grid.Column="3" Grid.RowSpan="3" >
+                        <ProgressBar.Foreground>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Offset="0" Color="GreenYellow" />
+                                <GradientStop Offset="1" Color="Red" />
+                            </LinearGradientBrush>
+                        </ProgressBar.Foreground>
+                    </ProgressBar>
+
+                    <Label VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" Content="100"></Label>
+                    <Label Name="valueLabel" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Content=""></Label>
+                    <Label VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Content="0"></Label>
+                    <Slider Orientation="Vertical" Name="ValueSlider" Grid.Column="0" Grid.RowSpan="3"
+                        Maximum="100" Minimum="0"  TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="ValueSlider_ValueChanged"></Slider>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <Canvas Background="Black"></Canvas>
+    </DockPanel>
+</Window>
