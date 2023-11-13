@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Drawing2DChartWriter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <DockPanel LastChildFill="True">
         <Grid DockPanel.Dock="Left" Width="200">
             <Grid.ColumnDefinitions>
@@ -71,13 +71,13 @@
                     </ProgressBar>
 
                     <Label VerticalAlignment="Center" Grid.Column="1" Grid.Row="0" Content="100"></Label>
-                    <Label Name="valueLabel" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Content=""></Label>
+                    <Label Name="valueLabel" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Content="0"></Label>
                     <Label VerticalAlignment="Center" Grid.Column="1" Grid.Row="2" Content="0"></Label>
                     <Slider Orientation="Vertical" Name="ValueSlider" Grid.Column="0" Grid.RowSpan="3"
                         Maximum="100" Minimum="0"  TickFrequency="1" IsSnapToTickEnabled="True" ValueChanged="ValueSlider_ValueChanged"></Slider>
                 </Grid>
             </GroupBox>
         </Grid>
-        <Canvas Background="Black"></Canvas>
+        <Canvas Background="Black" Name="canvas"></Canvas>
     </DockPanel>
 </Window>
