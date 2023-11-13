@@ -12,8 +12,14 @@ namespace Drawing2DChartWriter
     /// </summary>
     public partial class MainWindow : Window
     {
+        public const int cMaxNumofMV = 300;
         public const double cMinMV = 0.0;
         public const double cMaxMV = 100.0;
+
+        public const double cBorderTop = 0.05;
+        public const double cBorderBottom = 0.15;
+        public const double cBorderLeft = 0.15;
+        public const double cBorderRight = 0.05;
         public List<double> MVList { get; set; }
         public DispatcherTimer SamplingTimer { get; set; }
         public Random MVGenerator { get; set; }
@@ -35,11 +41,15 @@ namespace Drawing2DChartWriter
             //Wert was ausgwählt wird von radio
             double newMV = MVGenerator.NextDouble() * (cMaxMV - cMinMV) + cMinMV;
             MVList.Add(newMV);
+            while (MVList.Count > cMaxNumofMV)
+            {
+                MVList.RemoveAt(0);
+            }
 
             PointCollection pc = new PointCollection();
             for(int index = 0; index < MVList.Count; index++)
             {
-                pc.Add(new Point(index *3 , MVList[index] * 5));
+                pc.Add(new Point(Index2PixX(index) , Mv2PixY(MVList[index])));
             }
 
             Polyline plChart = new Polyline
@@ -50,6 +60,19 @@ namespace Drawing2DChartWriter
 
             canvas.Children.Add(plChart);
             
+        }
+
+        private double Mv2PixY(double mv)
+        {
+            double percent = (mv - cMinMV) / (cMaxMV - cMinMV);
+            return canvas.ActualHeight -
+                (percent * canvas.ActualHeight * (1.0 - cBorderTop - cBorderBottom) + canvas.ActualHeight*cBorderBottom);
+        }
+
+        private double Index2PixX(double index)
+        {
+            double percent = index / cMaxNumofMV;
+            return percent *  canvas.ActualWidth * (1.0 - cBorderLeft - cBorderRight) + canvas.ActualWidth* cBorderLeft;
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
@@ -65,6 +88,7 @@ namespace Drawing2DChartWriter
 
         private void SamplingSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            SamplingTimer.Interval = SamplingSlider.Value;
             SamplingLabel.Content = SamplingSlider.Value.ToString() + " ms";
         }
 
