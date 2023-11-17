@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Windows.Controls;
+using System.Diagnostics;
 
 namespace Drawing2DChartWriter
 {
@@ -31,7 +33,7 @@ namespace Drawing2DChartWriter
         {
             MVGenerator = new Random();
             MVList = new List<double>();
-            SamplingTimer = new DispatcherTimer { IsEnabled = false, Interval = new TimeSpan(0, 0, 0, 0, 50) };
+            SamplingTimer = new DispatcherTimer { IsEnabled = false, Interval = new TimeSpan(0, 0, 0, 0, 50)};
             SamplingTimer.Tick += SamplingTimer_Tick;
         }
 
@@ -39,40 +41,60 @@ namespace Drawing2DChartWriter
         {
             canvas.Children.Clear();
             //Wert was ausgwählt wird von radio
-            double newMV = MVGenerator.NextDouble() * (cMaxMV - cMinMV) + cMinMV;
-            MVList.Add(newMV);
-            while (MVList.Count > cMaxNumofMV)
+            if (SliderRadioValue.IsChecked == true)
             {
-                MVList.RemoveAt(0);
+                double value = ValueSlider.Value;
+                MVList.Add(value);
+                while (MVList.Count > cMaxNumofMV)
+                {
+                    MVList.RemoveAt(0);
+                }
+
+                PointCollection pc = new PointCollection();
+                for (int index = 0; index < MVList.Count; index++)
+                {
+                    pc.Add(new Point(Index2PixX(index), Mv2PixY(MVList[index])));
+                }
+
+                Polyline pl = new Polyline { StrokeThickness = 1, Stroke = new SolidColorBrush(Colors.White), Points = pc };
+                canvas.Children.Add(pl);
             }
-
-            PointCollection pc = new PointCollection();
-            for(int index = 0; index < MVList.Count; index++)
+            else
             {
-                pc.Add(new Point(Index2PixX(index) , Mv2PixY(MVList[index])));
+                double newMV = MVGenerator.NextDouble() * (cMaxMV - cMinMV) + cMinMV;
+                MVList.Add(newMV);
+                while (MVList.Count > cMaxNumofMV)
+                {
+                    MVList.RemoveAt(0);
+                }
+
+                PointCollection pc = new PointCollection();
+                for (int index = 0; index < MVList.Count; index++)
+                {
+                    pc.Add(new Point(Index2PixX(index), Mv2PixY(MVList[index])));
+                }
+
+                Polyline plChart = new Polyline
+                {
+                    Stroke = new SolidColorBrush(Colors.White),
+                    Points = pc
+                };
+
+                canvas.Children.Add(plChart);
             }
-
-            Polyline plChart = new Polyline
-            {
-                Stroke = new SolidColorBrush(Colors.White),
-                Points = pc
-            };
-
-            canvas.Children.Add(plChart);
-            
         }
 
         private double Mv2PixY(double mv)
         {
             double percent = (mv - cMinMV) / (cMaxMV - cMinMV);
             return canvas.ActualHeight -
-                (percent * canvas.ActualHeight * (1.0 - cBorderTop - cBorderBottom) + canvas.ActualHeight*cBorderBottom);
+                (percent * canvas.ActualHeight * (1.0 - cBorderTop - cBorderBottom) + canvas.ActualHeight * cBorderBottom);
         }
 
         private double Index2PixX(double index)
         {
             double percent = index / cMaxNumofMV;
-            return percent *  canvas.ActualWidth * (1.0 - cBorderLeft - cBorderRight) + canvas.ActualWidth* cBorderLeft;
+            return percent * canvas.ActualWidth * (1.0 - cBorderLeft - cBorderRight) + canvas.ActualWidth * cBorderLeft;
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
@@ -88,8 +110,12 @@ namespace Drawing2DChartWriter
 
         private void SamplingSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            SamplingTimer.Interval = SamplingSlider.Value;
-            SamplingLabel.Content = SamplingSlider.Value.ToString() + " ms";
+            Debug.WriteLine(SamplingSlider.Value.ToString());
+            if (SamplingSlider != null && SamplingTimer != null)
+            {
+                SamplingTimer.Interval = new TimeSpan(0,0,0,0,(int)SamplingSlider.Value);
+                SamplingLabel.Content = SamplingSlider.Value.ToString() + " ms";
+            }
         }
 
 

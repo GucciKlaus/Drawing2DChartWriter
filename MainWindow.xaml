@@ -35,18 +35,18 @@
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Label Grid.Row="1" Grid.Column="0"  Content="50ms"></Label>
-                    <Label Name="SamplingLabel" Grid.Row="1" Grid.Column="1"  Content="100ms"></Label>
-                    <Label Grid.Row="1" Grid.Column="2"  Content="1000ms"></Label>
                     <Slider Name="SamplingSlider" Grid.Row="0" Grid.ColumnSpan="3"
         Maximum="1000" Minimum="50" TickFrequency="50" IsSnapToTickEnabled="True" ValueChanged="SamplingSlider_ValueChanged"></Slider>
+                    <Label Name="SamplingLabel" Grid.Row="1" Grid.Column="1"  Content="100ms"></Label>
+                    <Label Grid.Row="1" Grid.Column="2"  Content="1000ms"></Label>
                 </Grid>
             </GroupBox>
 
 
             <GroupBox Grid.Row="2" Header="Generate Value by">
                 <StackPanel>
-                    <RadioButton Content="Random value" IsChecked="true"></RadioButton>
-                    <RadioButton Content="Slider value" IsChecked="false"></RadioButton>
+                    <RadioButton Name="RandomRadioValue" Content="Random value" IsChecked="true"></RadioButton>
+                    <RadioButton Name="SliderRadioValue" Content="Slider value" IsChecked="false"></RadioButton>
                 </StackPanel>
             </GroupBox>
             <GroupBox Grid.Row="3" Header="Set Value">
